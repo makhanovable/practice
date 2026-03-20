@@ -67,24 +67,6 @@ def login_view(request):
     return render(request, 'login.html', {'message': message})
 
 
-# Send mail
-def send_mail_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        try:
-            user = User.objects.get(email=email, is_active=False)
-            token = signing.dumps({'user_id': user.id})
-            send_mail(
-                subject='Email confirmation',
-                message=f'Click the link to confirm your account: http://127.0.0.1:8000/activate/{token}/',
-                from_email='makhanovable@gmail.com',
-                recipient_list=[email],
-            )
-        except User.DoesNotExist:
-            pass
-    return redirect('/')
-
-
 # Logout
 def logout_view(request):
     logout(request)
